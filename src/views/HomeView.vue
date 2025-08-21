@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto p-4">
-    <div class="flex justify-between">
+    <div class="flex justify-between pb-4">
       <div class="text-weather">Weather</div>
       <IconUser class="cursor-pointer" @click="router.push({ name: 'ProfileView' })" />
     </div>
@@ -16,23 +16,23 @@
       @search-change="debounceAsyncFind"
       @select="onSelect"
     />
-    <br />
-    <div>
-      <div v-if="cityRecords && cityRecords.length">
+
+    <div class="pt-5">
+      <div v-if="cityRecords && cityRecords.length" class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <!-- TODO: convert to weather cards -->
-        <div
-          v-for="item in cityRecords"
-          :key="item.id"
-          class="border p-2 mb-2"
-          @click="onSelect(item)"
-        >
-          <p>{{ item.city }}, {{ item.state }}, {{ item.country }}</p>
-          <button @click="onSelect(item)">View Weather</button>
-        </div>
+        <Button type="button" v-for="item in cityRecords" :key="item.id" @click="onSelect(item)">
+          <!-- <p>{{ item.city }}, {{ item.state }}, {{ item.country }}</p>
+          <button @click="onSelect(item)">View Weather</button> -->
+          <BigWeatherCards :item="item" />
+        </Button>
       </div>
       <div v-else>
         <p class="text-gray-500">No cities selected. Please search for a city or airport.</p>
       </div>
+
+      <!--  <BigWeatherCards>testing</BigWeatherCards>
+      <MidWeatherCards>testing</MidWeatherCards>
+      <SmallWeatherCards>testing</SmallWeatherCards> -->
     </div>
   </div>
 </template>
@@ -44,6 +44,9 @@ import { useRouter } from 'vue-router';
 import VueMultiselect from 'vue-multiselect';
 import type { GeoLocation } from '@/types/location.types';
 import IconUser from '@/components/shared/atoms/IconUser.vue';
+import BigWeatherCards from '@/components/WeatherCards/molecules/BigWeatherCards.vue';
+import MidWeatherCards from '@/components/WeatherCards/molecules/MidWeatherCards.vue';
+import SmallWeatherCards from '@/components/WeatherCards/molecules/SmallWeatherCards.vue';
 
 const store = useStore();
 const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;

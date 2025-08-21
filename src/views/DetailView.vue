@@ -61,8 +61,8 @@ import type { DailyForecast, HourlyForecast } from '@/types/weather.types';
 import dayjs from 'dayjs';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import mockCurrentWeather from '@/mocks/current-weather.mock.json';
-import mockWeeklyWeather from '@/mocks/weekly-weather.mock.json';
+// import mockCurrentWeather from '@/mocks/current-weather.mock.json';
+// import mockWeeklyWeather from '@/mocks/weekly-weather.mock.json';
 import type { GeoLocation } from '@/types/location.types';
 import { useNavigation } from '@/composables/useNavigation';
 
@@ -89,17 +89,17 @@ const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
 const getWeeklyForecast = async (lat: number, lon: number) => {
   console.log('getWeeklyForecast...');
 
-  // const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;  // TODO: uncomment when using real API
+  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
   try {
-    // const response = await fetch(url);
-    // if (!response.ok) {
-    //   throw new Error(`Response status: ${response.status}`);
-    // }
-    // const result = await response.json();
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+    const result = await response.json();
     // Loop through the result to get the daily forecast
     // TODO: fix `any` types
-    // listWeeklyForecast.value = (result.list as any[])
-    listWeeklyForecast.value = mockWeeklyWeather
+    listWeeklyForecast.value = (result.list as any[])
+      // listWeeklyForecast.value = mockWeeklyWeather
       .filter((item: any) => item.dt_txt.includes('12:00:00'))
       .map((item: any): DailyForecast => {
         const day = dayjs.unix(item.dt).format('dddd');
@@ -113,8 +113,8 @@ const getWeeklyForecast = async (lat: number, lon: number) => {
     // Due to API limitation, get 3 hourly forecast for hourly section
     const today = dayjs().format('YYYY-MM-DD');
     // TODO: fix `any` types
-    // listHourly.value = (result.list as any[])  // TODO: uncomment when using real API
-    listHourly.value = mockWeeklyWeather
+    listHourly.value = (result.list as any[])
+      // listHourly.value = mockWeeklyWeather
       .filter((item: any) => item.dt_txt.startsWith(today))
       .map((item: any) => {
         const icon = `https://openweathermap.org/img/wn/${item.weather[0].icon}.png`;
@@ -131,14 +131,14 @@ const getWeeklyForecast = async (lat: number, lon: number) => {
 
 const getCityWeather = async (lat: number, lon: number) => {
   console.log('getCityWeather...');
-  // const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`; // TODO: remove when using real API
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`; // TODO: remove when using real API
   try {
-    // const response = await fetch(url);
-    // if (!response.ok) {
-    //   throw new Error(`Response status: ${response.status}`);
-    // }
-    // const result = await response.json();
-    const result = mockCurrentWeather;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+    const result = await response.json();
+    // const result = mockCurrentWeather;
 
     textDate.value = dayjs().format('dddd, D MMMM YYYY');
     textLastUpdate.value = dayjs().format('h:mm A');
@@ -163,7 +163,18 @@ const onClickPlus = () => {
     state: state as string,
     country: country as string,
     id: `${lat},${lon}`, // Unique track-by custom id key
+    temprature: textTemperature.value,
+    weather: textWeather.value,
+    lastUpdate: textLastUpdate.value,
   });
+  /* 
+  
+     textDate.value = dayjs().format('dddd, D MMMM YYYY');
+    textLastUpdate.value = dayjs().format('h:mm A');
+    textWeather.value = result.weather[0].description;
+    iconUrl.value = `https://openweathermap.org/img/wn/${result.weather[0].icon}@2x.png`;
+    textTemperature.value = result.main.temp;
+  */
 };
 
 const onClickDelete = () => {
