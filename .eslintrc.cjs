@@ -30,5 +30,6 @@ module.exports = {
         message: 'Use `test()` instead of `it()` for consistency.',
       },
     ],
+    '@typescript-eslint/no-explicit-any': 'off',
   },
 };
