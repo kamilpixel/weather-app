@@ -19,15 +19,34 @@
       @select="onSelect"
     />
     <br />
-    <div>TODO: existing city weather cards</div>
+    <div>
+      <div v-if="cityRecords && cityRecords.length">
+        <!-- TODO: convert to weather cards -->
+        <div
+          v-for="item in cityRecords"
+          :key="item.id"
+          class="border p-2 mb-2"
+          @click="onSelect(item)"
+        >
+          <p>{{ item.city }}, {{ item.state }}, {{ item.country }}</p>
+          <button @click="onSelect(item)">View Weather</button>
+        </div>
+      </div>
+      <div v-else>
+        <p class="text-gray-500">No cities selected. Please search for a city or airport.</p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import VueMultiselect from 'vue-multiselect';
+import type { GeoLocation } from '@/types/location.types';
 
+const store = useStore();
 const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
 const selected = ref(null);
 const options = ref([]);
@@ -48,7 +67,7 @@ const asyncFind = async (query: string) => {
     // TODO refactor any types
     // TODO keep records in vuex store
     options.value = result.map((item: any) => ({
-      name: item.name,
+      city: item.name,
       state: item.state,
       country: item.country,
       lat: item.lat,
@@ -74,9 +93,9 @@ const debounceAsyncFind = (query: string) => {
   }, 1700);
 };
 
-const customLabel = ({ name, country, state }) => {
+const customLabel = ({ city, country, state }) => {
   // Only return non-empty values
-  return [name, state, country].filter(Boolean).join(', ');
+  return [city, state, country].filter(Boolean).join(', ');
 };
 
 // TODO refactor any types
@@ -87,8 +106,13 @@ const onSelect = (option: any) => {
     query: {
       lat: option.lat.toString(),
       lon: option.lon.toString(),
-      city: [option.name, option.state, option.country].filter(Boolean).join(', '),
+      city: option.city,
+      state: option.state,
+      country: option.country,
     },
   });
 };
+
+// Get and set city base on cities in vuex store
+const cityRecords = computed<GeoLocation[]>(() => store.state.weather.cities);
 </script>

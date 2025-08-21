@@ -63,6 +63,7 @@ export interface DailyForecast {
   icon: string;
   weather: string;
   temperature: number;
+  date: string;
 }
 
 export interface HourlyForecast extends Omit<DailyForecast, 'day'> {
