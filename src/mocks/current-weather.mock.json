@@ -1,0 +1,44 @@
+{
+  "coord": {
+    "lon": 101.6694,
+    "lat": 3.1308
+  },
+  "weather": [
+    {
+      "id": 804,
+      "main": "Clouds",
+      "description": "overcast clouds",
+      "icon": "04n"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 297.26,
+    "feels_like": 298.02,
+    "temp_min": 297.26,
+    "temp_max": 297.26,
+    "pressure": 1013,
+    "humidity": 88,
+    "sea_level": 1013,
+    "grnd_level": 1002
+  },
+  "visibility": 10000,
+  "wind": {
+    "speed": 1.05,
+    "deg": 58,
+    "gust": 1.94
+  },
+  "clouds": {
+    "all": 100
+  },
+  "dt": 1755706250,
+  "sys": {
+    "country": "MY",
+    "sunrise": 1755731436,
+    "sunset": 1755775369
+  },
+  "timezone": 28800,
+  "id": 1735161,
+  "name": "Kuala Lumpur",
+  "cod": 200
+}
