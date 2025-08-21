@@ -1,10 +1,8 @@
 <template>
   <div class="container mx-auto p-4">
-    <h1 class="text-xl font-medium">Weather</h1>
-    <br />
     <div class="flex justify-between">
-      <div>Weather</div>
-      <div>IconProfile</div>
+      <div class="text-weather">Weather</div>
+      <IconUser class="cursor-pointer" @click="router.push({ name: 'ProfileView' })" />
     </div>
     <VueMultiselect
       v-model="selected"
@@ -45,6 +43,7 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import VueMultiselect from 'vue-multiselect';
 import type { GeoLocation } from '@/types/location.types';
+import IconUser from '@/components/shared/atoms/IconUser.vue';
 
 const store = useStore();
 const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
@@ -116,3 +115,10 @@ const onSelect = (option: any) => {
 // Get and set city base on cities in vuex store
 const cityRecords = computed<GeoLocation[]>(() => store.state.weather.cities);
 </script>
+
+<style lang="scss" scoped>
+.text-weather {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+</style>

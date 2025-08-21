@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto p-4">
     <div class="flex justify-between items-center mb-4">
-      <ButtonIcon icon-name="chevron-left" @click="onClickBack" />
+      <ButtonIcon icon-name="chevron-left" @click="goHome" />
       <p>{{ city }}</p>
       <!-- If already exists in record show delete button -->
       <ButtonIcon v-if="!isCityInRecords" icon-name="plus" @click="onClickPlus" />
@@ -63,11 +63,10 @@ import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import mockCurrentWeather from '@/mocks/current-weather.mock.json';
 import mockWeeklyWeather from '@/mocks/weekly-weather.mock.json';
-import { useRouter } from 'vue-router';
 import type { GeoLocation } from '@/types/location.types';
+import { useNavigation } from '@/composables/useNavigation';
 
 const route = useRoute();
-const router = useRouter();
 const store = useStore();
 const lat: number = Number(route.query.lat);
 const lon: number = Number(route.query.lon);
@@ -79,6 +78,7 @@ const iconUrl = ref<string>('');
 const textTemperature = ref<number | null>(null);
 const listWeeklyForecast = ref<DailyForecast[]>([]);
 const listHourly = ref<HourlyForecast[]>([]);
+const { goHome } = useNavigation();
 
 const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
 
@@ -168,10 +168,6 @@ const onClickPlus = () => {
 
 const onClickDelete = () => {
   store.commit('weather/REMOVE_CITY', `${lat},${lon}`);
-};
-
-const onClickBack = () => {
-  router.push({ name: 'HomeView' });
 };
 
 const isCityInRecords = computed(() => {
