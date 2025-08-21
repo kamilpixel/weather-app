@@ -1,4 +1,4 @@
-# Tawk Weather App
+# Weather App
 
 ## TODO add description
 
