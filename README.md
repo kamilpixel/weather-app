@@ -1,6 +1,20 @@
 # Weather App
 
-## TODO add description
+A lightweight Vue 3 app that shows real-time weather using the **OpenWeather API**.
+
+## 🚀 How It Works
+
+- Enter a city name.
+- The app fetches weather data from OpenWeather.
+- Temperature, conditions, and other details are displayed instantly.
+
+## 🔑 Setup
+
+1. Get a free API key from [OpenWeather](https://openweathermap.org/api).
+2. Create a `.env` file in the project root:
+   ```bash
+   VITE_OPENWEATHER_KEY=your_api_key_here
+   ```
 
 ## 📂 Project Setup
 
