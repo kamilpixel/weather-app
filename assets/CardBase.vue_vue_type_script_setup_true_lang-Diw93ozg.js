@@ -1,1 +1,0 @@
-import{m as r,c as t,o,r as s}from"./index-D_xDHKAt.js";const a={class:"w-full h-full border border-gray-100 rounded-xl bg-slate-100"},d=r({inheritAttrs:!0,__name:"CardBase",setup(n){return(e,l)=>(o(),t("div",a,[s(e.$slots,"default")]))}});export{d as _};
