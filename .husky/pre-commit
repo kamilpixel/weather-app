@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Ensure the script is executable
+echo "Running pre-commit hook..."
+
+if ls src/**/*.test.ts 1> /dev/null 2>&1; then
+  npm test
+else
+  echo "No test files found, skipping tests."
+fi
+
+npx lint-staged
+
+echo "Pre-commit hook completed successfully."
