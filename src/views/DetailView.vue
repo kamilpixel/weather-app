@@ -1,56 +1,64 @@
 <template>
-  <div class="container mx-auto p-4">
-    <div class="flex justify-between items-center mb-4">
-      <ButtonIcon icon-name="chevron-left" @click="goHome" />
-      <p>{{ city }}</p>
-      <!-- If already exists in record show delete button -->
-      <ButtonIcon v-if="!isCityInRecords" icon-name="plus" @click="onClickPlus" />
-      <ButtonIcon v-else icon-name="bin" @click="onClickDelete" />
+  <div>
+    <div class="background--detail-page">
+      <div class="flex justify-between items-center mb-4 p-2">
+        <ButtonIcon icon-name="chevron-left" @click="goHome" />
+        <p class="text-white font-semibold">{{ city }}</p>
+        <!-- If already exists in record show delete button -->
+        <ButtonIcon v-if="!isCityInRecords" icon-name="plus" @click="onClickPlus" />
+        <ButtonIcon v-else icon-name="bin" @click="onClickDelete" />
+      </div>
+
+      <section class="mx-auto w-[300px] pb-5 text-white text-center">
+        <p>{{ textDate }}</p>
+        <img :src="iconUrl" alt="Weather Icon" class="mx-auto" />
+        <p class="text-3xl">{{ textTemperature }}º C</p>
+        <p class="text-lg font-medium pb-2">{{ textWeather }}</p>
+        <div class="mx-auto w-[200px]">
+          <div class="flex items-center">
+            <p>Last Update {{ textLastUpdate }}</p>
+            <ButtonIcon icon-name="refresh" @click="onClickRefresh" class="pl-2" />
+          </div>
+        </div>
+      </section>
     </div>
 
-    <section>
-      <p>{{ textDate }}</p>
-      <img :src="iconUrl" alt="Weather Icon" />
-      <p>{{ textTemperature }}º C</p>
-      <p>{{ textWeather }}</p>
-      <p>Last Update {{ textLastUpdate }}</p>
-      <button @click="onClickRefresh">refresh</button>
-      <br />
-      <hr />
-    </section>
-    <section>
-      <h1>Hourly Forecast</h1>
-      <div style="display: flex">
-        <div
-          v-for="item in listHourly"
-          :key="item.date"
-          style="border: 1px solid blue; width: 100px; height: 200px; margin-bottom: 5px"
-        >
-          <img :src="item.icon" alt="Weather Icon" />
-          <p>{{ item.date }}</p>
-          <p>{{ item.temperature }}º C</p>
-          <p>{{ item.weather }}</p>
+    <div class="container mx-auto p-4">
+      <section class="pb-4">
+        <p class="font-semibold text-lg pb-2">Hourly Forecast</p>
+        <div class="grid grid-cols-4 gap-4">
+          <div v-for="item in listHourly" :key="item.date">
+            <CardBase class="p-2 text-center !bg-gray-50">
+              <img :src="item.icon" :alt="item.weather" class="mx-auto" />
+              <p class="font-semibold">{{ item.temperature }}º C</p>
+              <p class="font-light">{{ item.date }}</p>
+            </CardBase>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <br />
-      <hr />
-    </section>
-    <section>
-      <h1>Weekly Forecast</h1>
-      <div
-        v-for="item in listWeeklyForecast"
-        :key="item.date"
-        style="border: 1px solid red; width: 100px; height: 200px; margin-bottom: 5px"
-      >
-        <img :src="item.icon" alt="Weather Icon" />
-        <p>{{ item.day }}</p>
-        <p>{{ item.temperature }}º C</p>
-        <p>{{ item.weather }}</p>
-      </div>
-      <br />
-      <hr />
-    </section>
+      <section>
+        <p class="font-semibold text-lg pb-2">Weekly Forecast</p>
+        <div class="grid grid-cols-1 gap-4">
+          <div v-for="item in listWeeklyForecast" :key="item.date">
+            <CardBase class="p-2 text-center background--mid-weather-card">
+              <div class="flex justify-between">
+                <div class="flex">
+                  <img :src="item.icon" :alt="item.weather" class="mx-auto pr-2" />
+                  <div class="text-left">
+                    <p class="font-semibold">{{ item.day }}</p>
+                    <p class="font-light">{{ item.weather }}</p>
+                  </div>
+                </div>
+                <div class="flex items-center">
+                  <p class="font-semibold">{{ item.temperature }}º C</p>
+                </div>
+              </div>
+            </CardBase>
+          </div>
+        </div>
+      </section>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
@@ -65,6 +73,7 @@ import { useRoute } from 'vue-router';
 // import mockWeeklyWeather from '@/mocks/weekly-weather.mock.json';
 import type { GeoLocation } from '@/types/location.types';
 import { useNavigation } from '@/composables/useNavigation';
+import CardBase from '@/components/WeatherCards/atoms/CardBase.vue';
 
 const route = useRoute();
 const store = useStore();
@@ -167,14 +176,6 @@ const onClickPlus = () => {
     weather: textWeather.value,
     lastUpdate: textLastUpdate.value,
   });
-  /* 
-  
-     textDate.value = dayjs().format('dddd, D MMMM YYYY');
-    textLastUpdate.value = dayjs().format('h:mm A');
-    textWeather.value = result.weather[0].description;
-    iconUrl.value = `https://openweathermap.org/img/wn/${result.weather[0].icon}@2x.png`;
-    textTemperature.value = result.main.temp;
-  */
 };
 
 const onClickDelete = () => {
@@ -192,3 +193,11 @@ onMounted(() => {
   getWeeklyForecast(lat, lon);
 });
 </script>
+<style lang="scss" scoped>
+.background--detail-page {
+  background: linear-gradient(118.25deg, #4f80fa 1.2%, #3764d7 59.26%, #335fd1 79.2%);
+}
+.background--mid-weather-card {
+  background: #d2dfff;
+}
+</style>
