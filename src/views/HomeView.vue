@@ -50,6 +50,7 @@ import SmallWeatherCards from '@/components/WeatherCards/molecules/SmallWeatherC
 
 const store = useStore();
 const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+const apiUrl = import.meta.env.VITE_OPENWEATHER_API_URL;
 const selected = ref(null);
 const options = ref([]);
 const timeoutDebounce = ref<any | undefined>(null);
@@ -59,7 +60,7 @@ const router = useRouter();
 const asyncFind = async (query: string) => {
   console.log('asyncFind', query);
   isLoadingOptions.value = true;
-  const url = `http://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=10&appid=${apiKey}`;
+  const url = `${apiUrl}/geo/1.0/direct?q=${query}&limit=10&appid=${apiKey}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {

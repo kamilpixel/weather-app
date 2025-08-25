@@ -90,6 +90,7 @@ const listHourly = ref<HourlyForecast[]>([]);
 const { goHome } = useNavigation();
 
 const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+const apiUrl = import.meta.env.VITE_OPENWEATHER_API_URL;
 
 // TODO: refactor to separate API file services
 // TODO: refactor proper types
@@ -98,7 +99,7 @@ const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
 const getWeeklyForecast = async (lat: number, lon: number) => {
   console.log('getWeeklyForecast...');
 
-  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
+  const url = `${apiUrl}/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -140,7 +141,7 @@ const getWeeklyForecast = async (lat: number, lon: number) => {
 
 const getCityWeather = async (lat: number, lon: number) => {
   console.log('getCityWeather...');
-  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`; // TODO: remove when using real API
+  const url = `${apiUrl}/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`; // TODO: remove when using real API
   try {
     const response = await fetch(url);
     if (!response.ok) {
