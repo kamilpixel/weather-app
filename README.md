@@ -2,6 +2,10 @@
 
 A lightweight Vue 3 app that shows real-time weather using the **OpenWeather API**.
 
+## Online preview
+
+https://kamilpixel-weather-app.netlify.app/
+
 ## 🚀 How It Works
 
 - Enter a city name.
@@ -14,6 +18,7 @@ A lightweight Vue 3 app that shows real-time weather using the **OpenWeather API
 2. Create a `.env` file in the project root:
    ```bash
    VITE_OPENWEATHER_API_KEY=your_api_key_here
+   VITE_OPENWEATHER_API_URL=https://api.openweathermap.org
    ```
 
 ## 📂 Project Setup
